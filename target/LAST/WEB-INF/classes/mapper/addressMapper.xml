@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sw.dao.addressMapper">
+    <insert id="insAddress" parameterType="map">
+        insert into
+        address
+        values
+        (0,#{aName},#{aAddress},#{aPhone},#{userId})
+    </insert>
+    <select id="selAddressById" parameterType="int" resultType="sw.pojo.address">
+        select *
+        from address
+        where userId = #{userId}
+    </select>
+    <delete id="delAddressByaId" parameterType="int">
+        delete
+        from address
+        where
+        aId = #{aId}
+    </delete>
+    <update id="updAddressByaId" parameterType="sw.pojo.address">
+        update address set
+        aName=#{aName},aAddress=#{aAddress},aPhone=#{aPhone}
+        where
+        userId = #{userId}
+    </update>
+</mapper>

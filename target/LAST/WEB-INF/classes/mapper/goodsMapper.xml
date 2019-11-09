@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sw.dao.goodsMapper">
+    <resultMap id="GoodsMapper" type="sw.pojo.goods">
+        <id column="goodsId" property="goodsId"/>
+        <result column="gXiaoLian" property="gXiaoLian"/>
+        <result column="gImg" property="gImg"/>
+        <result column="gImg2" property="gImg2"/>
+        <result column="gImg3" property="gImg3"/>
+        <result column="gImg4" property="gImg4"/>
+        <result column="gName" property="gName"/>
+        <result column="gDetailsTest" property="gDetailsTest"/>
+        <result column="gDetailsImg" property="gDetailsImg"/>
+        <result column="gDetailsImg2" property="gDetailsImg2"/>
+        <result column="gTime" property="gTime"/>
+        <result column="gPrice" property="gPrice"/>
+        <result column="gRebate" property="gRebate"/>
+        <result column="gState" property="gState"/>
+        <result column="gType" property="gType"/>
+    </resultMap>
+    <!--测试查询所有商品-->
+    <select id="selGoodsAll" resultMap="GoodsMapper">
+         select *
+         from goods
+     </select>
+    <!--   查询折扣商品 ndesc:升序 desc:降序  -->
+    <select id="selRebateGoods" parameterType="String" resultType="sw.pojo.goods">
+        select *
+        from goods
+        where
+        gRebate != 0 and gRebate != 1
+        <if test="Rebate =='ndesc'">
+            order by gRebate
+        </if>
+        <if test="Rebate=='desc'">
+            order by gRebate desc
+        </if>
+    </select>
+    <!--    根据销量排序 ndesc:升序 desc:降序-->
+    <select id="selXiaoLianGoods" resultType="sw.pojo.goods" parameterType="String">
+        select *
+        from goods
+        <if test="${XiaoLian=='ndesc'}">
+            order by gXiaoLian
+        </if>
+        <if test="${XiaoLian=='desc'}">
+            order by gXiaoLian desc
+        </if>
+    </select>
+    <!--    根据ID查询商品-->
+    <select id="selGoodsById" parameterType="int" resultType="sw.pojo.goods">
+         select *
+         from goods
+         where
+         goodsId = #{goodsId}
+    </select>
+
+    <!--    根据类型查询商品-->
+    <select id="selGoodsByType" parameterType="int" resultType="sw.pojo.goods">
+        select *
+        from goods
+        where
+        gType = #{goodsTypeId}
+        order by gXiaoLian
+    </select>
+    <!--    根据商品类型或者商品名称查询商品-->
+    <select id="selGoods" parameterType="map" resultMap="GoodsMapper">
+        select *
+        from goods
+        <where>
+            <if test="goodType != null and goodType != 0">
+                and gType = #{goodType}
+            </if>
+            <if test="goodName != null and goodName != ''">
+                and gName LIKE "%"#{goodName}"%"
+            </if>
+            <if test="gXl == 'desc'">
+                order by gXiaoLian desc
+            </if>
+            <if test="gXl == 'no_desc'">
+                order by gXiaoLian
+            </if>
+            <if test="gPrice == 'desc'">
+                order by gPrice*gRebate desc
+            </if>
+            <if test="gPrice == 'no_desc'">
+                order by gPrice*gRebate
+            </if>
+        </where>
+    </select>
+    <!--    根据名称查询类型ID-->
+    <select id="selTypeByName" parameterType="String" resultType="sw.pojo.goodsType">
+        select *
+        from goodsType
+        where
+        typeName = #{typeName}
+    </select>
+    <update id="updGooodsXiaoLian" parameterType="sw.pojo.goods">
+        update goods set
+        gXiaoLian = #{gXiaoLian}
+        where
+        goodsId = #{goodsId}
+    </update>
+</mapper>

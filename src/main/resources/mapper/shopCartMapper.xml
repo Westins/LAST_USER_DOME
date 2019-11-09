@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sw.dao.shopCartMapper">
+    <resultMap id="shopCartMapper" type="sw.pojo.shopcart">
+        <id column="cId" property="cId"></id>
+        <result column="goodsId" property="goodsId"></result>
+        <result column="cNum" property="cNum"></result>
+        <result column="userId" property="userId"></result>
+        <result column="cState" property="cState"></result>
+        <association property="goods" javaType="sw.pojo.goods" select="selGoodsByGoodsId" column="goodsId"/>
+    </resultMap>
+
+    <!-- 查询某个用户的购物车-->
+    <select id="selShopCartById" parameterType="Map" resultMap="shopCartMapper">
+        select *
+        from shopcart
+        where
+        userId = #{userId} and cState= #{cState}
+    </select>
+    <!--    更改购物车商品数量-->
+    <update id="updShopCartNum" parameterType="Map">
+        update shopcart set
+        cNum = #{cNum}
+        where
+        cId = #{cId}
+    </update>
+    <!--  用户下单 修改购物车状态  -->
+    <update id="updShopCartState" parameterType="int">
+        update shopcart set
+        cState = '1'
+        where
+        cId = #{cId}
+    </update>
+    <!--删除对应购物车信息-->
+    <delete id="delShopCart" parameterType="int">
+       delete
+       from shopcart
+       where
+       cId = #{cId}
+    </delete>
+
+    <!--   查询对应商品ID的商品信息-->
+    <select id="selGoodsByGoodsId" parameterType="int" resultType="sw.pojo.goods">
+        select *
+        from goods
+        where
+        goodsId = #{goodsId}
+    </select>
+    <insert id="addShopcart" parameterType="sw.pojo.shopcart">
+        insert into
+        shopcart
+        (goodsId,cNum,userId)
+        values
+        (#{goodsId},#{cNum},#{userId})
+    </insert>
+
+    <select id="selShopcartBysId" parameterType="int" resultMap="shopCartMapper">
+        select *
+        from shopcart
+        where
+        cId = #{cId}
+    </select>
+</mapper>

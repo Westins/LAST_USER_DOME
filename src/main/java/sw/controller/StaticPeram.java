@@ -23,9 +23,9 @@ public class StaticPeram {
 
 	// 替换成你的AK (产品密)
 
-	final static String accessKeyId = "LTAI4FseDFk92iaavw2U3Tb5";// 你的accessKeyId,填你自己的 上文配置所得  自行配置
+	final static String accessKeyId = "**";// 你的accessKeyId,填你自己的 上文配置所得  自行配置
 
-	final static String accessKeySecret = "7eLAANVuPg2lV34iArD78GOTJzeboF";// 你的accessKeySecret,填你自己的 上文配置所得 自行配置
+	final static String accessKeySecret = "**";// 你的accessKeySecret,填你自己的 上文配置所得 自行配置
 
 	// 必填:短信签名-可在短信控制台中找到
 
